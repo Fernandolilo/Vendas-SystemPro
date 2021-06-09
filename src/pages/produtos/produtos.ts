@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
+
+
 @IonicPage()
 @Component({
-  selector: 'page-home',
-  templateUrl: 'home.html',
+  selector: 'page-produtos',
+  templateUrl: 'produtos.html',
 })
-export class HomePage {
+export class ProdutosPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-  
-  
   }
 
-  login() {
-    this.navCtrl.setRoot('ProdutosPage');
+  ionViewDidLoad() {
+    console.log('ionViewDidLoad ProdutosPage');
   }
 
 }
