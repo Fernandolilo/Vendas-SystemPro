@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { CategoriaService } from '../../app/service/domain/categoria.service';
+import { API_CONFIG } from '../../config/api.config';
+import { CategoriaDTO } from '../../models/categoria.dto';
 
 
 
@@ -10,11 +13,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ProdutosPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  bucketUrl: string = API_CONFIG.bucketBaseUrl;
+  items: CategoriaDTO[];
+
+  constructor(
+    public navCtrl: NavController, 
+    public navParams: NavParams,
+    public categoriaService: CategoriaService) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ProdutosPage');
-  }
+    this.categoriaService.findAll()
+    .subscribe(response => {
+      this.items = response;
+    },
+    error => {
+      console.log(error);
+    });
+  }  
 
 }
