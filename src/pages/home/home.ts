@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, NavController, NavParams } from 'ionic-angular';
+import { AuthService } from '../../app/service/auth.service';
 import { CredenciaisDTO } from '../../models/CredenciaisDTO';
 
 @IonicPage()
@@ -18,8 +19,8 @@ export class HomePage {
 
   constructor(
     public navCtrl: NavController, 
-    public menu: MenuController) {
-  
+    public menu: MenuController,
+    public auth: AuthService) {  
   
   }
 
