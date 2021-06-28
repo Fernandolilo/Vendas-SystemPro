@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, NavController, NavParams } from 'ionic-angular';
+import { CredenciaisDTO } from '../../models/CredenciaisDTO';
 
 @IonicPage()
 @Component({
@@ -7,6 +8,12 @@ import { IonicPage, MenuController, NavController, NavParams } from 'ionic-angul
   templateUrl: 'home.html',
 })
 export class HomePage {
+
+  creds : CredenciaisDTO ={
+    email: "",
+    senha: ""   
+  };
+
 
   constructor(
     public navCtrl: NavController, 
@@ -23,6 +30,7 @@ export class HomePage {
   }
 
   login() {
+    console.log(this.creds);
     this.navCtrl.setRoot('CategoriasPage');
   }
 
