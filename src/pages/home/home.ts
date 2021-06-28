@@ -8,7 +8,9 @@ import { IonicPage, MenuController, NavController, NavParams } from 'ionic-angul
 })
 export class HomePage {
 
-  constructor(public navCtrl: NavController, public menu: MenuController) {
+  constructor(
+    public navCtrl: NavController, 
+    public menu: MenuController) {
   
   
   }
@@ -21,7 +23,7 @@ export class HomePage {
   }
 
   login() {
-    this.navCtrl.setRoot('ProdutosPage');
+    this.navCtrl.setRoot('CategoriasPage');
   }
 
 }

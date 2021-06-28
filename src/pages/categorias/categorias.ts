@@ -8,10 +8,10 @@ import { CategoriaDTO } from '../../models/categoria.dto';
 
 @IonicPage()
 @Component({
-  selector: 'page-produtos',
-  templateUrl: 'produtos.html',
+  selector: 'page-categorias',
+  templateUrl: 'categorias.html',
 })
-export class ProdutosPage {
+export class CategoriasPage {
 
   bucketUrl: string = API_CONFIG.bucketBaseUrl;
   items: CategoriaDTO[];
@@ -30,6 +30,7 @@ export class ProdutosPage {
     error => {
       console.log(error);
     });
+  
   }  
 
 }
