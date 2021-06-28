@@ -8,6 +8,7 @@ import { CredenciaisDTO } from '../../models/CredenciaisDTO';
   templateUrl: 'home.html',
 })
 export class HomePage {
+  [x: string]: any;
 
   creds : CredenciaisDTO ={
     email: "",
@@ -31,7 +32,13 @@ export class HomePage {
 
   login() {
     console.log(this.creds);
-    this.navCtrl.setRoot('CategoriasPage');
+    this.auth.authenticate(this.creds)
+      .subscribe(response => {
+        console.log(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('CategoriasPage');
+      },
+      error => {})
+   
   }
 
 }
