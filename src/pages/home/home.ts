@@ -11,17 +11,17 @@ import { CredenciaisDTO } from '../../models/CredenciaisDTO';
 export class HomePage {
   [x: string]: any;
 
-  creds : CredenciaisDTO ={
+  creds: CredenciaisDTO = {
     email: "",
-    senha: ""   
+    senha: "",
   };
 
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public menu: MenuController,
-    public auth: AuthService) {  
-  
+    public auth: AuthService) {
+
   }
 
   ionViewWillEnter() {
@@ -32,16 +32,11 @@ export class HomePage {
   }
 
   login() {
-    console.log(this.creds);
     this.auth.authenticate(this.creds)
-    .subscribe(response => {
-      this.auth.successfulLogin(response.headers.get('Authorization'));
-      console.log(this.creds);
-      this.navCtrl.setRoot('CategoriasPage');
-    
+      .subscribe(response => {
+        this.auth.successfulLogin(response.headers.get('Authorization'));
+        this.navCtrl.setRoot('CategoriasPage');
       },
       error => {})
-   
-  }
-
+   }
 }
