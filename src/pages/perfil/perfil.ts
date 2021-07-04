@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ClienteService } from '../../app/service/domain/Cliente.service';
 import { StorageService } from '../../app/service/storage.service';
+import { API_CONFIG } from '../../config/api.config';
+import { ClienteDTO } from '../../models/cliente.dto';
 
-/**
- * Generated class for the PerfilPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -15,21 +12,34 @@ import { StorageService } from '../../app/service/storage.service';
   templateUrl: 'perfil.html',
 })
 export class PerfilPage {
-
-  email: string;
+  
+  cliente: ClienteDTO;
 
   constructor(
     public navCtrl: NavController, 
     public navParams: NavParams,
-    public storage: StorageService) {
+    public storage: StorageService,
+    public clienteService: ClienteService) {
   }
 
   ionViewDidLoad() {
     let locauUser = this.storage.getLocalUser();
     if(locauUser && locauUser.email){
-      this.email = locauUser.email;
+      this.clienteService.findByEmail(locauUser.email)
+        .subscribe(response => {
+          this.cliente = response;
+          this.getImageIfExistis();         
+      },
+      error => {});
     }
 
   }
 
+  getImageIfExistis() {
+    this.clienteService.getImageFromBucket(this.cliente.id)
+      .subscribe(response =>{
+        this.cliente.imageUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
+    },
+    error => {});
+  }
 }
