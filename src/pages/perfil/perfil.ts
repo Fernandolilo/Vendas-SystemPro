@@ -12,11 +12,11 @@ import { ClienteDTO } from '../../models/cliente.dto';
   templateUrl: 'perfil.html',
 })
 export class PerfilPage {
-  
+
   cliente: ClienteDTO;
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public storage: StorageService,
     public clienteService: ClienteService) {
@@ -24,22 +24,29 @@ export class PerfilPage {
 
   ionViewDidLoad() {
     let locauUser = this.storage.getLocalUser();
-    if(locauUser && locauUser.email){
+    if (locauUser && locauUser.email) {
       this.clienteService.findByEmail(locauUser.email)
         .subscribe(response => {
           this.cliente = response;
-          this.getImageIfExistis();         
-      },
-      error => {});
+          this.getImageIfExistis();
+        },
+          error => {
+            if (error.status == 403) {
+              this.navCtrl.setRoot('HomePage');
+            }
+          });
     }
-
+    else {
+      this.navCtrl.setRoot('HomePage');
+    }
   }
+
 
   getImageIfExistis() {
     this.clienteService.getImageFromBucket(this.cliente.id)
-      .subscribe(response =>{
+      .subscribe(response => {
         this.cliente.imageUrl = `${API_CONFIG.bucketBaseUrl}/cp${this.cliente.id}.jpg`;
-    },
-    error => {});
+      },
+        error => { });
   }
 }

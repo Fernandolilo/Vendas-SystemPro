@@ -1,11 +1,16 @@
 import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { AlertController } from "ionic-angular";
 import { Observable } from "rxjs/Rx";
+import { StorageService } from "../app/service/storage.service";
 
 
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor{
+
+    constructor(public storage: StorageService, public alertCtrl: AlertController){
+    }
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         console.log("passou no interceptor")
@@ -21,14 +26,58 @@ export class ErrorInterceptor implements HttpInterceptor{
             }
             console.log(errorObj);
 
+            switch(errorObj.status) {
+                case 401:
+                    this.handle401();
+                    break;
 
-            return Observable.throw(errorObj)
-        })as any;
+                case 403:
+                    console.log(errorObj);
+                    this.handle403();
+                    break;
 
+                default:
+                    this.handleDefaulteErro(errorObj);
+
+            }
+
+            return Observable.throw(errorObj);
+        }) as any;
     }
+
+    handle403() {
+        this.storage.setLocalUser(null);
+    }
+    handle401(){
+        let alert = this.alertCtrl.create({
+            title: 'Erro 401: falha de autenticação',
+            message: 'Email ou senha incorreto',
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text:  'ok'
+                }
+            ]
+        });
+        alert.present();
+    }
+    handleDefaulteErro(errorObj) {
+        let alert = this.alertCtrl.create({
+            title: 'Erro ' + errorObj.status + ': ' + errorObj.error,
+            message: errorObj.message,
+            enableBackdropDismiss: false,
+            buttons: [
+                {
+                    text:  'ok'
+                }
+            ]
+        });
+        alert.present();
+    }
+
 }
 export const ErrorInterceptorProvider ={
     provide: HTTP_INTERCEPTORS,
     useClass: ErrorInterceptor,
     multi: true,
-}; 
+};
